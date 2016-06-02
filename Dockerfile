@@ -21,8 +21,8 @@ RUN	apk update && \
 	apk add --update \
 	bash curl git ca-certificates nodejs \
 	php7-fpm php7-json php7-zlib php7-xml php7-pdo php7-phar php7-curl php7-openssl php7-dom php7-intl php7-ctype \
-        php7-pdo_mysql php7-mysqli php7-opcache \
-        php7-gd php7-iconv php7-mcrypt php7-mbstring && \
+        php7-pdo_mysql php7-mysqli php7-opcache php7-redis \
+        php7-gd php7-iconv php7-mcrypt php7-mbstring php7-session && \
 	sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php7/php-fpm.conf && \
         sed -i "s|;*listen\s*=\s*127.0.0.1:9000|listen = 9000|g" /etc/php7/php-fpm.conf && \
         sed -i "s|;*listen\s*=\s*/||g" /etc/php7/php-fpm.conf && \
