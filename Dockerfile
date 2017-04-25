@@ -15,7 +15,7 @@ RUN	apk update && \
 	apk add --update tzdata && \
 	ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone && \
 	apk add --update \
-	bash curl git ca-certificates nodejs \
+	bash curl git ca-certificates nodejs php7 \
 	php7-fpm php7-json php7-zlib php7-xml php7-pdo php7-phar php7-curl php7-openssl php7-dom php7-intl php7-ctype \
     php7-pdo_mysql php7-mysqli php7-opcache php7-memcached php7-apcu php7-redis \
     php7-gd php7-iconv php7-mcrypt php7-mbstring php7-session php7-zip php7-imap php7-mailparse && \
