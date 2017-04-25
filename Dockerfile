@@ -3,7 +3,7 @@ MAINTAINER Andre Bazaglia <abazaglia@gmail.com>
 
 ENV TIMEZONE=America/Sao_Paulo \
     PHP_MEMORY_LIMIT=128M MAX_UPLOAD=8M PHP_MAX_FILE_UPLOAD=8M PHP_MAX_POST=8M \
-    NGINX_VERSION=1.10.1
+    NGINX_VERSION=1.12.0
 
 # enable edge & testing repo
 RUN sed -i -e 's/v3\.4/edge/g' /etc/apk/repositories && \
@@ -17,8 +17,8 @@ RUN	apk update && \
 	apk add --update \
 	bash curl git ca-certificates nodejs \
 	php7-fpm php7-json php7-zlib php7-xml php7-pdo php7-phar php7-curl php7-openssl php7-dom php7-intl php7-ctype \
-    php7-pdo_mysql php7-mysqli php7-opcache php7-memcached php7-redis \
-    php7-gd php7-iconv php7-mcrypt php7-mbstring php7-session && \
+    php7-pdo_mysql php7-mysqli php7-opcache php7-memcached php7-apcu php7-redis \
+    php7-gd php7-iconv php7-mcrypt php7-mbstring php7-session php7-zip php7-imap php7-mailparse && \
 	sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php7/php-fpm.conf && \
     sed -i "s|;*listen\s*=\s*127.0.0.1:9000|listen = 9000|g" /etc/php7/php-fpm.conf && \
     sed -i "s|;*listen\s*=\s*/||g" /etc/php7/php-fpm.conf && \
@@ -87,12 +87,5 @@ RUN \
   rm -rf /tmp/* && \
   apk del ${build_pkgs} && \
   rm -rf /var/cache/apk/*
-
-#composer & bower
-RUN curl -sS https://getcomposer.org/installer --insecure | php && \
-    mv composer.phar /usr/bin/composer && \
-    composer global require "fxp/composer-asset-plugin:~1.2"
-ENV PATH /root/.composer/vendor/bin:$PATH
-RUN npm install -g bower
 
 EXPOSE 80
