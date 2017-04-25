@@ -12,7 +12,7 @@ RUN sed -i -e 's/v3\.4/edge/g' /etc/apk/repositories && \
 # let's roll
 RUN	apk update && \
 	apk upgrade && \
-	apk add --update tzdata && \
+	apk add tzdata && \
 	ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone && \
 	apk add --update \
 	bash curl git ca-certificates nodejs php7 \
@@ -28,7 +28,6 @@ RUN	apk update && \
     sed -i "s|;*max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|i" /etc/php7/php.ini && \
     sed -i "s|;*post_max_size =.*|post_max_size = ${PHP_MAX_POST}|i" /etc/php7/php.ini && \
     sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= 0|i" /etc/php7/php.ini && \
-    ln -s /usr/bin/php7 /usr/bin/php && \
     apk del tzdata && \
 	rm -rf /var/cache/apk/*
 
