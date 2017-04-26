@@ -1,25 +1,21 @@
-FROM alpine:3.4
+FROM alpine:3.5
 MAINTAINER Andre Bazaglia <abazaglia@gmail.com>
 
 ENV TIMEZONE=America/Sao_Paulo \
     PHP_MEMORY_LIMIT=128M MAX_UPLOAD=8M PHP_MAX_FILE_UPLOAD=8M PHP_MAX_POST=8M \
     NGINX_VERSION=1.12.0
 
-# enable edge & testing repo
-RUN sed -i -e 's/v3\.4/edge/g' /etc/apk/repositories && \
-	echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-
 # let's roll
 RUN	apk update && \
-	apk upgrade && \
-	apk add tzdata && \
-	ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone && \
-	apk add --update \
-	bash curl git ca-certificates nodejs php7 \
-	php7-fpm php7-json php7-zlib php7-xml php7-pdo php7-phar php7-curl php7-openssl php7-dom php7-intl php7-ctype \
-    php7-pdo_mysql php7-mysqli php7-opcache php7-memcached php7-apcu php7-redis \
-    php7-gd php7-iconv php7-mcrypt php7-mbstring php7-session php7-zip php7-imap php7-mailparse && \
-	sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php7/php-fpm.conf && \
+    apk upgrade && \
+    apk add tzdata && \
+    ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone && \
+    apk add --update \
+    bash curl git ca-certificates nodejs php7 \
+    php7-fpm php7-json php7-zlib php7-xml php7-pdo php7-phar php7-curl php7-openssl php7-dom php7-intl php7-ctype \
+    php7-pdo_mysql php7-mysqli php7-opcache php7-apcu \
+    php7-gd php7-iconv php7-mcrypt php7-mbstring php7-session php7-zip php7-imap && \
+    sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php7/php-fpm.conf && \
     sed -i "s|;*listen\s*=\s*127.0.0.1:9000|listen = 9000|g" /etc/php7/php-fpm.conf && \
     sed -i "s|;*listen\s*=\s*/||g" /etc/php7/php-fpm.conf && \
     sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php7/php.ini && \
@@ -29,7 +25,8 @@ RUN	apk update && \
     sed -i "s|;*post_max_size =.*|post_max_size = ${PHP_MAX_POST}|i" /etc/php7/php.ini && \
     sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= 0|i" /etc/php7/php.ini && \
     apk del tzdata && \
-	rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/* && \
+    ln -s /usr/bin/php7 /usr/bin/php
 
 # nginx
 RUN \
